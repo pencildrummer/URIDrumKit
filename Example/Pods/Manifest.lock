@@ -1,0 +1,16 @@
+PODS:
+  - URIDrumKit (0.1.0)
+
+DEPENDENCIES:
+  - URIDrumKit (from `../`)
+
+EXTERNAL SOURCES:
+  URIDrumKit:
+    :path: ../
+
+SPEC CHECKSUMS:
+  URIDrumKit: 26c32e24048edd0508ebdcd74f6ff6f6d5834c7e
+
+PODFILE CHECKSUM: d64cce76f5de14975a4ecb448b3ce4a46877ba34
+
+COCOAPODS: 1.1.1

@@ -1,0 +1,22 @@
+{
+  "name": "URIDrumKit",
+  "version": "0.1.0",
+  "summary": "A short description of URIDrumKit.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/pencildrummer/URIDrumKit",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "pencildrummer": "fabio.borella@feedback.xyz"
+  },
+  "source": {
+    "git": "https://github.com/pencildrummer/URIDrumKit.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "URIDrumKit/Classes/**/*"
+}
