@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'URIDrumKit_Example' do
+  pod 'URIDrumKit', :path => '../'
+
+  target 'URIDrumKit_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
