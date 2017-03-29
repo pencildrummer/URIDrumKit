@@ -10,18 +10,18 @@ import Foundation
 
 public typealias URIHandlerBlock = (params: [String: AnyObject]?)->()
 
-public class URIManager {
+open class URIManager {
     
-    public static var scheme: String?
+    open static var scheme: String?
     
-    private var handlers: [URIHandler] = []
+    fileprivate var handlers: [URIHandler] = []
     
-    public class func addHandler(path: String, block: URIHandlerBlock) {
+    open class func addHandler(_ path: String, block: URIHandlerBlock) {
         let handler = URIHandler(path: path, block: block)
         sharedManager.handlers.append(handler)
     }
     
-    public class func shouldHandleURL(url: NSURL) -> Bool {
+    open class func shouldHandleURL(_ url: URL) -> Bool {
         guard let scheme = self.scheme else {
             return false
         }
@@ -33,9 +33,9 @@ public class URIManager {
         return true
     }
 
-    private static let sharedManager: URIManager = URIManager()
+    fileprivate static let sharedManager: URIManager = URIManager()
     
-    public class func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+    open class func application(_ application: UIApplication, openURL url: URL, sourceApplication: String?, annotation: AnyObject) -> Bool {
         
         var didHandleURL = false
         
