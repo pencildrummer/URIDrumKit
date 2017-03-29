@@ -8,7 +8,7 @@
 
 import Foundation
 
-public typealias URIHandlerBlock = (params: [String: AnyObject]?)->()
+public typealias URIHandlerBlock = (_ params: [String: String]?)->()
 
 open class URIManager {
     
@@ -16,7 +16,7 @@ open class URIManager {
     
     fileprivate var handlers: [URIHandler] = []
     
-    open class func addHandler(_ path: String, block: URIHandlerBlock) {
+    open class func addHandler(_ path: String, block: @escaping URIHandlerBlock) {
         let handler = URIHandler(path: path, block: block)
         sharedManager.handlers.append(handler)
     }
@@ -26,7 +26,7 @@ open class URIManager {
             return false
         }
         
-        guard let urlScheme = url.scheme where urlScheme == scheme else {
+        guard let urlScheme = url.scheme, urlScheme == scheme else {
             return false
         }
         
@@ -35,14 +35,14 @@ open class URIManager {
 
     fileprivate static let sharedManager: URIManager = URIManager()
     
-    open class func application(_ application: UIApplication, openURL url: URL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+    open class func application(_ application: UIApplication, openURL url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         
         var didHandleURL = false
         
         for handler in sharedManager.handlers {
             if handler.matchURL(url) {
                 let params = handler.parametersURL(url)
-                handler.block(params: params)
+                handler.block(params)
                 
                 didHandleURL = true
             }

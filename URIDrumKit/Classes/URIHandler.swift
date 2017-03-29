@@ -20,7 +20,7 @@ class URIHandler {
     
     fileprivate var pathComponents: [String]!
     
-    init(path: String, block: URIHandlerBlock) {
+    init(path: String, block: @escaping URIHandlerBlock) {
         self.path = path
         self.block = block
         updatePathComponents()
