@@ -11,26 +11,26 @@ import Foundation
 class URIHandler {
     
     internal var scheme: String?
-    internal private(set) var path: String! {
+    internal fileprivate(set) var path: String! {
         didSet {
             updatePathComponents()
         }
     }
-    internal private(set) var block: URIHandlerBlock!
+    internal fileprivate(set) var block: URIHandlerBlock!
     
-    private var pathComponents: [String]!
+    fileprivate var pathComponents: [String]!
     
-    init(path: String, block: URIHandlerBlock) {
+    init(path: String, block: @escaping URIHandlerBlock) {
         self.path = path
         self.block = block
         updatePathComponents()
     }
     
-    private func updatePathComponents() {
-        pathComponents = path.componentsSeparatedByString("/")
+    fileprivate func updatePathComponents() {
+        pathComponents = path.components(separatedBy: "/")
     }
     
-    func matchURL(url: NSURL) -> Bool {
+    func matchURL(_ url: URL) -> Bool {
         
         if let scheme = scheme {
             guard url.scheme == scheme else {
@@ -48,7 +48,7 @@ class URIHandler {
             return false
         }
         
-        for (index, component) in pathComponents.enumerate() {
+        for (index, component) in pathComponents.enumerated() {
             if component.isParameter {
                 continue
             }
@@ -60,12 +60,12 @@ class URIHandler {
         return true
     }
     
-    func parametersURL(url: NSURL) -> [String: String]? {
+    func parametersURL(_ url: URL) -> [String: String]? {
         
         let urlPathComponents = url.urlPathComponents
         
         var parameters: [String: String] = [:]
-        for (index, component) in pathComponents.enumerate() {
+        for (index, component) in pathComponents.enumerated() {
             
             if component.isParameter {
                 let parameterName = component.parameterNameString
@@ -79,11 +79,11 @@ class URIHandler {
 
 }
 
-extension NSURL {
+extension URL {
     
     var urlPathComponents: [String] {
         let pathComponentsString = (host ?? "") + (path ?? "")
-        return pathComponentsString.componentsSeparatedByString("/")
+        return pathComponentsString.components(separatedBy: "/")
     }
     
 }
@@ -91,9 +91,9 @@ extension NSURL {
 extension String {
     
     var isParameter: Bool {
-        if let startPlaceholderIndex = rangeOfString("{"), let endPlaceholderIndex = rangeOfString("}") {
-            let startParenthesisPosition = startIndex.distanceTo(startPlaceholderIndex.startIndex)
-            let endParenethesisPosition = startIndex.distanceTo(endPlaceholderIndex.startIndex)
+        if let startPlaceholderIndex = range(of: "{"), let endPlaceholderIndex = range(of: "}") {
+            let startParenthesisPosition = characters.distance(from: startIndex, to: startPlaceholderIndex.lowerBound)
+            let endParenethesisPosition = characters.distance(from: startIndex, to: endPlaceholderIndex.lowerBound)
             if startParenthesisPosition == 0 && endParenethesisPosition == characters.count-1 {
                 return true
             }
@@ -102,7 +102,7 @@ extension String {
     }
     
     var parameterNameString: String {
-        return stringByReplacingOccurrencesOfString("{", withString: "").stringByReplacingOccurrencesOfString("}", withString: "")
+        return replacingOccurrences(of: "{", with: "").replacingOccurrences(of: "}", with: "")
     }
     
 }
