@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'URIDrumKit'
-  s.version          = '0.1.3'
+  s.version          = '0.2.0'
   s.summary          = 'Library to easily handle Universal Links in iOS app'
 
 # This description is used to generate tags and improve search results.
