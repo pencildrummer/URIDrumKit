@@ -82,7 +82,7 @@ class URIHandler {
 extension URL {
     
     var urlPathComponents: [String] {
-        let pathComponentsString = (host ?? "") + (path ?? "")
+        let pathComponentsString = (host ?? "") + path
         return pathComponentsString.components(separatedBy: "/")
     }
     
