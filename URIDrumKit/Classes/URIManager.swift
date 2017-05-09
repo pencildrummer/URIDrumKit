@@ -18,8 +18,12 @@ open class URIManager {
     
     open class func addHandler(_ path: String, block: @escaping URIHandlerBlock) {
         let handler = URIHandler(path: path, block: block)
-        sharedManager.handlers.append(handler)
+        URIManager.default.handlers.append(handler)
     }
+
+    fileprivate static let `default`: URIManager = URIManager()
+    
+    // MARK: URL handling
     
     open class func shouldHandleURL(_ url: URL) -> Bool {
         guard let scheme = self.scheme else {
@@ -32,14 +36,34 @@ open class URIManager {
         
         return true
     }
-
-    fileprivate static let sharedManager: URIManager = URIManager()
     
     open class func application(_ application: UIApplication, openURL url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         
+        return URIManager.default.handleUrl(url: url, checkScheme: true)
+    }
+    
+    // MARK: Universal link handling
+    
+    open class func shouldHandleUserActivity(_ userActivity: NSUserActivity) -> Bool {
+        if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
+            return true
+        }
+        return false
+    }
+    
+    open class func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        if let url = userActivity.webpageURL {
+            return URIManager.default.handleUrl(url: url, checkScheme: false)
+        }
+        return false
+    }
+    
+    // MARK: Internal helpers
+    
+    fileprivate func handleUrl(url: URL, checkScheme: Bool) -> Bool {
         var didHandleURL = false
         
-        for handler in sharedManager.handlers {
+        for handler in URIManager.default.handlers {
             if handler.matchURL(url) {
                 let params = handler.parametersURL(url)
                 handler.block(params)

@@ -30,15 +30,17 @@ class URIHandler {
         pathComponents = path.components(separatedBy: "/")
     }
     
-    func matchURL(_ url: URL) -> Bool {
+    func matchURL(_ url: URL, checkScheme: Bool = true) -> Bool {
         
-        if let scheme = scheme {
-            guard url.scheme == scheme else {
-                return false
-            }
-        } else {
-            guard url.scheme == URIManager.scheme else {
-                return false
+        if checkScheme {
+            if let scheme = scheme {
+                guard url.scheme == scheme else {
+                    return false
+                }
+            } else {
+                guard url.scheme == URIManager.scheme else {
+                    return false
+                }
             }
         }
         
