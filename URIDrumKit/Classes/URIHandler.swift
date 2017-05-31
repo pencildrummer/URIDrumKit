@@ -44,7 +44,9 @@ class URIHandler {
             }
         }
         
-        let urlPathComponents = url.urlPathComponents
+        var urlPathComponents: [String]
+        
+        urlPathComponents = url.urlPathComponents(checkScheme: checkScheme)
         
         guard urlPathComponents.count == pathComponents.count else {
             return false
@@ -62,9 +64,9 @@ class URIHandler {
         return true
     }
     
-    func parametersURL(_ url: URL) -> [String: String]? {
+    func parametersURL(_ url: URL, checkScheme: Bool) -> [String: String]? {
         
-        let urlPathComponents = url.urlPathComponents
+        let urlPathComponents = url.urlPathComponents(checkScheme: checkScheme)
         
         var parameters: [String: String] = [:]
         for (index, component) in pathComponents.enumerated() {
@@ -83,9 +85,14 @@ class URIHandler {
 
 extension URL {
     
-    var urlPathComponents: [String] {
-        let pathComponentsString = (host ?? "") + path
-        return pathComponentsString.components(separatedBy: "/")
+    func urlPathComponents(checkScheme: Bool) -> [String] {
+        if checkScheme {
+            let pathComponentsString = (host ?? "") + path
+            return pathComponentsString.components(separatedBy: "/")
+        } else {
+            return path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+                .components(separatedBy: "/")
+        }
     }
     
 }

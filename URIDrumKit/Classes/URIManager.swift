@@ -58,14 +58,18 @@ open class URIManager {
         return false
     }
     
+    public class func handleUrl(url: URL, checkScheme: Bool) -> Bool {
+        return URIManager.default.handleUrl(url: url, checkScheme: checkScheme)
+    }
+    
     // MARK: Internal helpers
     
     fileprivate func handleUrl(url: URL, checkScheme: Bool) -> Bool {
         var didHandleURL = false
         
         for handler in URIManager.default.handlers {
-            if handler.matchURL(url) {
-                let params = handler.parametersURL(url)
+            if handler.matchURL(url, checkScheme: checkScheme) {
+                let params = handler.parametersURL(url, checkScheme: checkScheme)
                 handler.block(params)
                 
                 didHandleURL = true
