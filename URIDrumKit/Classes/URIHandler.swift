@@ -101,9 +101,9 @@ extension String {
     
     var isParameter: Bool {
         if let startPlaceholderIndex = range(of: "{"), let endPlaceholderIndex = range(of: "}") {
-            let startParenthesisPosition = characters.distance(from: startIndex, to: startPlaceholderIndex.lowerBound)
-            let endParenethesisPosition = characters.distance(from: startIndex, to: endPlaceholderIndex.lowerBound)
-            if startParenthesisPosition == 0 && endParenethesisPosition == characters.count-1 {
+            let startParenthesisPosition = distance(from: startIndex, to: startPlaceholderIndex.lowerBound)
+            let endParenethesisPosition = distance(from: startIndex, to: endPlaceholderIndex.lowerBound)
+            if startParenthesisPosition == 0 && endParenethesisPosition == count-1 {
                 return true
             }
         }
