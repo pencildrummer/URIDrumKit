@@ -58,6 +58,7 @@ open class URIManager {
         return false
     }
     
+    @discardableResult
     public class func handleUrl(url: URL, checkScheme: Bool) -> Bool {
         return URIManager.default.handleUrl(url: url, checkScheme: checkScheme)
     }
